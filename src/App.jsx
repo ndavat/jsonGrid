@@ -21,7 +21,8 @@ import {
   Eye,
   EyeOff,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Trash2
 } from 'lucide-react'
 import './App.css'
 
@@ -145,6 +146,12 @@ function App() {
     }
   }
 
+  const clearJson = () => {
+    setJsonInput('')
+    setParsedJson(null)
+    setError('')
+  }
+
   const renderGrid = () => {
     if (!parsedJson) return null
 
@@ -237,17 +244,42 @@ function App() {
           >
             <Copy className="w-4 h-4" />
           </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearJson}
+            title="Clear JSON"
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
         </div>
       </div>
       
       <div className="flex-1 relative">
-        <Textarea
-          ref={textareaRef}
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          className="h-full resize-none font-mono text-sm border-0 rounded-none"
-          placeholder="Enter your JSON data here..."
-        />
+        <div className="h-full flex overflow-auto">
+          {showLineNumbers && (
+            <div className="bg-muted/50 text-muted-foreground py-2 px-4 text-sm font-mono text-right select-none sticky left-0 border-r border-border">
+              {jsonInput.split('\n').map((_, i) => (
+                <div key={i} className="leading-6">{i + 1}</div>
+              ))}
+            </div>
+          )}
+          <div className="flex-1 min-w-0 relative">
+            <Textarea
+              ref={textareaRef}
+              value={jsonInput}
+              onChange={(e) => setJsonInput(e.target.value)}
+              className={`h-full w-full resize-none font-mono text-sm border-0 rounded-none leading-6 ${showLineNumbers ? 'pl-2' : 'pl-4'}`}
+              placeholder="Enter your JSON data here..."
+              wrap="off"
+              style={{ 
+                whiteSpace: 'pre',
+                overflowX: 'auto'
+              }}
+            />
+          </div>
+        </div>
         {error && (
           <div className="absolute bottom-2 left-2 right-2 bg-destructive/10 border border-destructive/20 rounded p-2 text-sm text-destructive">
             {error}
@@ -301,14 +333,6 @@ function App() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h1 className="text-2xl font-bold text-primary">JSONGRID</h1>
-              <div className="hidden md:flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  Add to Chrome
-                </Button>
-                <Button variant="outline" size="sm">
-                  Save & Share
-                </Button>
-              </div>
             </div>
             
             <div className="flex items-center gap-2">
@@ -327,9 +351,6 @@ function App() {
                 title="Toggle theme"
               >
                 {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Settings className="w-4 h-4" />
               </Button>
             </div>
           </div>
