@@ -56,7 +56,7 @@ function App() {
   const [parsedJson, setParsedJson] = useState(null)
   const [error, setError] = useState('')
   const [isDarkMode, setIsDarkMode] = useState(false)
-  const [viewMode, setViewMode] = useState('split') // 'split' or 'tab'
+  const [viewMode, setViewMode] = useState('tab') // 'split' or 'tab'
   const [activeTab, setActiveTab] = useState('json') // 'json' or 'grid'
   const [selectedCell, setSelectedCell] = useState(null)
   const [isFullscreen, setIsFullscreen] = useState(false)

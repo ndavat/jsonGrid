@@ -15,10 +15,71 @@ A complete clone of the JSON Grid Viewer website (https://jsongrid.com/json-grid
 
 ## Installation
 
-1. Extract the zip file
+1. Clone the repository
 2. Navigate to the project directory:
    ```bash
    cd jsongrid-clone
+   ```
+3. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+4. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+
+## Deployment on Render
+
+This project is configured for easy deployment on Render.com using the following steps:
+
+1. Push your code to a GitHub repository
+
+2. Go to [Render.com](https://render.com) and create a new Static Site
+
+3. Connect your GitHub repository
+
+4. Render will automatically:
+   - Detect the configuration from `render.yaml`
+   - Install dependencies using `pnpm install`
+   - Build the application using `pnpm build`
+   - Deploy the contents of the `dist` directory
+
+The deployment configuration includes:
+- Static site optimization
+- Single Page Application routing
+- Node.js version 20.10.0 or higher
+- Automatic builds on every push to main branch
+
+### Configuration Files
+
+The project includes two important configuration files for deployment:
+
+1. `render.yaml`:
+   ```yaml
+   services:
+     - type: web
+       name: jsongrid
+       env: static
+       buildCommand: pnpm install && pnpm build
+       staticPublishPath: ./dist
+       routes:
+         - type: rewrite
+           source: /*
+           destination: /index.html
+       envVars:
+         - key: NODE_VERSION
+           value: 20.10.0
+   ```
+
+2. Package.json engine specification:
+   ```json
+   {
+     "engines": {
+       "node": ">=20.10.0"
+     }
+   }
+   ```
    ```
 
 3. Install dependencies:
